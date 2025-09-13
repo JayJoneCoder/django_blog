@@ -1,0 +1,110 @@
+{% load text_filters %}
+{% load tz %}
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>搜索结果</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            margin-top: 40px;
+        }
+
+        .article-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .article-card {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .article-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+            height: 45px; /* 限制两行高度 */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2; /* 限制为两行 */
+        }
+
+        .article-meta {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+
+        .article-content {
+            font-size: 1em;
+            height: 45px; /* 固定高度 */
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2; /* 限制为两行 */
+            text-overflow: ellipsis;
+        }
+
+        .btn-primary {
+            margin-bottom: 20px;
+        }
+
+        .article-card:hover,
+        .article-card:focus,
+        .article-card:active {
+            text-decoration: none;
+            color: inherit;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+    <h1 class="mb-4">搜索结果</h1>
+    <a href="{% url 'main' %}" class="btn btn-primary">返回文章列表</a>
+    <div class="article-container">
+    {% if articles %}
+        {% for article in articles %}
+            <a href="{% url 'article_detail' article.id %}" class="article-card">
+                <div class="article-title">{{ article.title|truncate_title:18 }}</div>
+                <div class="article-meta">
+                    作者: {{ article.author_name }} | 类别: {{ article.category_name }}<br>
+                    创建时间: {{ article.create_time|timezone:"Asia/Shanghai" }}
+                </div>
+                <div class="article-content">{{ article.content }}</div>
+            </a>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-warning" role="alert">
+            无搜索结果
+        </div>
+    {% endif %}
+</div>
+</div>
+<footer style="background-color: #f5f5f5; text-align: center; padding: 10px 0; border-top: 1px solid #dee2e6; margin-top: 20px;">
+        <p style="margin: 0; color: #6c757d;">© 2024 ZhangJiezhong. All rights reserved.</p>
+    </footer>
+</body>
+</html>

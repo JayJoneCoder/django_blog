@@ -1,0 +1,145 @@
+{% load tz %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ article.title }}</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* 背景和字体优化 */
+        body {
+            background-color: #f1f5f9; /* 柔和的淡灰蓝色背景 */
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+        }
+
+        .article-detail {
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .article-title {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            color: #333;
+            text-align: center;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            font-size: 1.1em;
+            color: #6c757d;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .article-timestamp {
+            font-size: 0.9em;
+            color: #868e96;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .article-content {
+            font-size: 1.15em;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            white-space: pre-wrap; /* 保留换行和空格 */
+            word-wrap: break-word;
+            text-align: justify; /* 文字两端对齐 */
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .back-button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn-success, .btn-danger {
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: 500;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        /* 提高按钮之间的间距 */
+        .action-buttons div {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="article-detail">
+            <h1 class="article-title">{{ article.title }}</h1>
+            <div class="article-meta">
+    <span>作者: {{ article.author_name }}</span> |
+    <span>类别: {{ article.category_name }}</span>
+</div>
+
+            <div class="article-timestamp">
+                <span>创建时间: {{ article.create_time|timezone:"Asia/Shanghai" }}</span><br>
+                <span>最后更新时间: {{ article.update_time|timezone:"Asia/Shanghai" }}</span>
+            </div>
+            <div class="article-content">
+                {{ article.content|linebreaks }}
+            </div>
+            <div class="action-buttons">
+                <a href="{% url 'main' %}" class="back-button">返回文章列表</a>
+                {% if request.session.id == article.u_id %}
+                <div>
+                    <a href="{% url 'edit_article' article.id %}" class="btn btn-success">编辑</a>
+                    <form action="{% url 'delete_article' article.id %}" method="post" style="display: inline;">
+    {% csrf_token %}
+    <button class="btn btn-danger" onclick="return confirm('您确定要删除这篇文章吗？');" type="submit">删除</button>
+</form>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+<footer style="background-color: #f1f5f9; text-align: center; padding: 10px 0; border-top: 1px solid #dee2e6; margin-top: 20px;">
+    <p style="margin: 0; color: #6c757d;">© 2024 ZhangJiezhong. All rights reserved.</p>
+</footer>
+</body>
+</html>

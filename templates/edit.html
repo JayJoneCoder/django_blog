@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Article</title>
+
+    <!-- 引入 Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- 自定义样式 -->
+    <style>
+        body {
+            background: linear-gradient(to right, #f0f8ff, #e6f7ff);
+            font-family: 'Arial', sans-serif;
+        }
+        .edit-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+        }
+        .btn-edit {
+            width: 100%;
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white; /* 确保文字为白色 */
+        }
+        .btn-edit:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .input-field {
+            width: 100%; /* 100%宽度 */
+            padding: 12px; /* 内边距 */
+            margin-bottom: 15px; /* 下边距 */
+            border: 1px solid #ccc; /* 边框 */
+            border-radius: 4px; /* 圆角 */
+            font-size: 16px; /* 字体大小 */
+        }
+        .edit-input-field {
+            height: 150px; /* 更大高度 */
+        }
+    </style>
+</head>
+<body>
+    <div class="edit-container">
+        <h2>编辑文章</h2>
+        <form method="POST" action="{% url 'edit_article' article.id %}">
+            {% csrf_token %}
+            <!-- 文章标题 -->
+            <div class="form-group">
+                <label for="title">标题：</label>
+                <input type="text" class="form-control input-field" id="title" name="title" value="{{ article.title }}" required>
+            </div>
+            <!-- 类别选择 -->
+           <div class="form-group">
+            <label for="category">类别：</label>
+                <select id="category" name="c_id" class="input-field">
+                    {% for category in categories %}
+                        <option value="{{ category.id }}" {% if article.c_id == category.id %}selected{% endif %}>
+                            {{ category.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- 文章内容 -->
+            <div class="form-group">
+                <label for="content">正文：</label>
+                <textarea class="form-control input-field edit-input-field" id="content" name="content" rows="10" required>{{ article.content }}</textarea>
+            </div>
+            <!-- 提交按钮 -->
+            <button type="submit" class="btn btn-edit">保存</button>
+        </form>
+    </div>
+<footer style="background-color: #f0f8ff; text-align: center; padding: 10px 0; border-top: 1px solid #dee2e6; margin-top: 20px;">
+    <p style="margin: 0; color: #6c757d;">© 2024 ZhangJiezhong. All rights reserved.</p>
+</footer>
+</body>
+</html>

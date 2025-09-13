@@ -30,7 +30,6 @@ def doLogin(request):
         # 写 session
         request.session['username'] = user.username
         request.session['id'] = user.id
-        # 推荐使用 redirect 到 article_list，让该视图负责构造上下文（author_name/username 等）
         return redirect('main')
     else:
         # 登录失败，显示错误
@@ -58,7 +57,7 @@ def doAdd(request):
     Article.objects.create(**dicts)
 
     # 添加文章后，重定向到主界面
-    return redirect('main')  # 确保 'main' 是你在 urls.py 中定义的文章列表视图的名称
+    return redirect('main')
 
 
 
@@ -87,11 +86,11 @@ def doEdit(request, article_id):
         article.content = content
         article.c_id = c_id
 
-        # 保存文章，Django会自动处理 create_time 字段
+        # 保存文章，Django自动处理 create_time 字段
         article.save()
 
         # 编辑完成后重定向到文章列表或其它页面
-        return redirect('main')  # 或者使用其他适当的视图
+        return redirect('main')
 
 
 def article_list(request):
@@ -107,7 +106,7 @@ def article_list(request):
 def delete_article(request, article_id):
     # 检查用户是否已登录
     if 'id' not in request.session:
-        return redirect('login')  # 或者是适当的登录页面 URL
+        return redirect('login')
 
     if request.method == "POST":
         try:
@@ -163,4 +162,4 @@ def register(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('login')  # 这里重定向到登录页面，可以根据需要调整
+    return redirect('login')  # 重定向到登录页面

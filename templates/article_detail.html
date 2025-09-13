@@ -7,10 +7,17 @@
     <title>{{ article.title }}</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* 背景和字体优化 */
-        body {
-            background-color: #f1f5f9; /* 柔和的淡灰蓝色背景 */
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            background-color: #f1f5f9;
             font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            flex: 1; /* 让内容区域撑开剩余空间 */
             padding: 20px;
         }
 
@@ -50,9 +57,9 @@
             font-size: 1.15em;
             line-height: 1.8;
             margin-bottom: 30px;
-            white-space: pre-wrap; /* 保留换行和空格 */
+            white-space: pre-wrap;
             word-wrap: break-word;
-            text-align: justify; /* 文字两端对齐 */
+            text-align: justify;
         }
 
         .action-buttons {
@@ -101,10 +108,16 @@
             background-color: #c82333;
         }
 
-        /* 提高按钮之间的间距 */
         .action-buttons div {
             display: flex;
             gap: 10px;
+        }
+
+        footer {
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 10px 0;
+            border-top: 1px solid #dee2e6;
         }
     </style>
 </head>
@@ -113,9 +126,9 @@
         <div class="article-detail">
             <h1 class="article-title">{{ article.title }}</h1>
             <div class="article-meta">
-    <span>作者: {{ article.author_name }}</span> |
-    <span>类别: {{ article.category_name }}</span>
-</div>
+                <span>作者: {{ article.author_name }}</span> |
+                <span>类别: {{ article.category_name }}</span>
+            </div>
 
             <div class="article-timestamp">
                 <span>创建时间: {{ article.create_time|timezone:"Asia/Shanghai" }}</span><br>
@@ -130,16 +143,22 @@
                 <div>
                     <a href="{% url 'edit_article' article.id %}" class="btn btn-success">编辑</a>
                     <form action="{% url 'delete_article' article.id %}" method="post" style="display: inline;">
-    {% csrf_token %}
-    <button class="btn btn-danger" onclick="return confirm('您确定要删除这篇文章吗？');" type="submit">删除</button>
-</form>
+                        {% csrf_token %}
+                        <button class="btn btn-danger" onclick="return confirm('您确定要删除这篇文章吗？');" type="submit">删除</button>
+                    </form>
                 </div>
                 {% endif %}
             </div>
         </div>
     </div>
-<footer style="background-color: #f1f5f9; text-align: center; padding: 10px 0; border-top: 1px solid #dee2e6; margin-top: 20px;">
-    <p style="margin: 0; color: #6c757d;">© 2024 ZhangJiezhong. All rights reserved.</p>
-</footer>
+
+    <footer>
+        <p style="margin: 0; color: #6c757d;">
+            © 2024 ZhangJiezhong. 本项目开源，遵循
+            <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank">GPLv3</a> 许可协议。
+            <a href="https://github.com/JayJoneCoder/django_blog" target="_blank">访问 GitHub 仓库</a>
+            欢迎批评、指正、学习与贡献。
+        </p>
+    </footer>
 </body>
 </html>

@@ -7,12 +7,17 @@
     <title>搜索结果</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
             background-color: #f5f5f5;
             font-family: 'Arial', sans-serif;
         }
 
         .container {
+            flex: 1; /* 内容撑开主体 */
             margin-top: 40px;
         }
 
@@ -44,12 +49,12 @@
             font-weight: bold;
             margin-bottom: 10px;
             color: #333;
-            height: 45px; /* 限制两行高度 */
+            height: 45px;
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
             -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2; /* 限制为两行 */
+            -webkit-line-clamp: 2;
         }
 
         .article-meta {
@@ -60,11 +65,11 @@
 
         .article-content {
             font-size: 1em;
-            height: 45px; /* 固定高度 */
+            height: 45px;
             overflow: hidden;
             display: -webkit-box;
             -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2; /* 限制为两行 */
+            -webkit-line-clamp: 2;
             text-overflow: ellipsis;
         }
 
@@ -78,33 +83,46 @@
             text-decoration: none;
             color: inherit;
         }
+
+        footer {
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 10px 0;
+            border-top: 1px solid #dee2e6;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-    <h1 class="mb-4">搜索结果</h1>
-    <a href="{% url 'main' %}" class="btn btn-primary">返回文章列表</a>
-    <div class="article-container">
-    {% if articles %}
-        {% for article in articles %}
-            <a href="{% url 'article_detail' article.id %}" class="article-card">
-                <div class="article-title">{{ article.title|truncate_title:18 }}</div>
-                <div class="article-meta">
-                    作者: {{ article.author_name }} | 类别: {{ article.category_name }}<br>
-                    创建时间: {{ article.create_time|timezone:"Asia/Shanghai" }}
+        <h1 class="mb-4">搜索结果</h1>
+        <a href="{% url 'main' %}" class="btn btn-primary">返回文章列表</a>
+        <div class="article-container">
+            {% if articles %}
+                {% for article in articles %}
+                    <a href="{% url 'article_detail' article.id %}" class="article-card">
+                        <div class="article-title">{{ article.title|truncate_title:18 }}</div>
+                        <div class="article-meta">
+                            作者: {{ article.author_name }} | 类别: {{ article.category_name }}<br>
+                            创建时间: {{ article.create_time|timezone:"Asia/Shanghai" }}
+                        </div>
+                        <div class="article-content">{{ article.content }}</div>
+                    </a>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-warning" role="alert">
+                    无搜索结果
                 </div>
-                <div class="article-content">{{ article.content }}</div>
-            </a>
-        {% endfor %}
-    {% else %}
-        <div class="alert alert-warning" role="alert">
-            无搜索结果
+            {% endif %}
         </div>
-    {% endif %}
-</div>
-</div>
-<footer style="background-color: #f5f5f5; text-align: center; padding: 10px 0; border-top: 1px solid #dee2e6; margin-top: 20px;">
-        <p style="margin: 0; color: #6c757d;">© 2024 ZhangJiezhong. All rights reserved.</p>
+    </div>
+
+    <footer>
+        <p style="margin: 0; color: #6c757d;">
+            © 2024 ZhangJiezhong. 本项目开源，遵循
+            <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank">GPLv3</a> 许可协议。
+            <a href="https://github.com/JayJoneCoder/django_blog" target="_blank">访问 GitHub 仓库</a>
+            欢迎批评、指正、学习与贡献。
+        </p>
     </footer>
 </body>
 </html>

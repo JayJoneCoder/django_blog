@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from demo1 import views
+
 urlpatterns = [
     #path("admin/", admin.site.urls),
     path('', views.login, name='login'),  # 登录页面
@@ -27,13 +28,9 @@ urlpatterns = [
     path('doEdit/<int:article_id>/', views.doEdit, name='doEdit_article'),  # 处理编辑
     path('delete/<int:article_id>/', views.delete_article, name='delete_article'),  # 删除文章
     path('main/', views.article_list, name='main'),  # 文章列表
-    path('article/<int:article_id>/', views.article_detail, name='article_detail'),
+    path('article/<int:article_id>/', views.article_detail, name='article_detail'),  # 文章内容
     path('search/', views.search, name='search'),  # 搜索结果页面
-    path('register/', views.register, name='register'),
-    path('logout/', views.logout_view, name='logout'),
-
-
+    path('register/', views.register, name='register'),  # 注册
+    path('logout/', views.logout_view, name='logout'),  # 退出登录
 
 ]
-
-
